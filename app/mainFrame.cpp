@@ -187,7 +187,7 @@ void TestFrame::OnGetData()
     else
         cdtList.push_back("sort:created-asc");
 
-    if (!gb.GetData(SearchCondition{ search_type, search_type_message }, cdtList, szFilePath, 50))
+    if (gb.GetData(SearchCondition{ search_type, search_type_message }, cdtList, szFilePath, 50))
     {
         ::MessageBox(NULL, _T("Download data success!"), _T(""), NULL);
     }

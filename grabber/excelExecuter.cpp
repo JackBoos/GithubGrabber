@@ -41,7 +41,7 @@ bool excelExecuter::WriteToFile(const char* filePath, const IteamDataList& dataL
     std::string str_tmp = "";
 
     xlsxiowriter writer = nullptr;
-    if ((writer = xlsxiowrite_open(filePath, DEFAULT_LABEL_NAME)) == nullptr)
+    if ((writer = xlsxiowrite_open(filename.c_str(), DEFAULT_LABEL_NAME)) == nullptr)
     {
         return false;
     }
@@ -80,7 +80,6 @@ bool excelExecuter::WriteToFile(const char* filePath, const IteamDataList& dataL
         }
         xlsxiowrite_next_row(writer);
     }
-    xlsxiowrite_next_row(writer);
 
     xlsxiowrite_close(writer);
 
