@@ -2,22 +2,25 @@
 //
 
 #include <iostream>
-#include "grabber.h"
+#include "mainFrame.h"
+//#define WIN32_LEAN_AND_MEAN	
 
-using namespace std;
-
-int main()
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
-    grabber gb("https://api.github.com/search/", "JackBoosY");
-    gb.Init();
+    CPaintManagerUI::SetInstance(hInstance);
 
-    ConditionList cdtList;
-    cdtList.push_back("type:issue");
-    cdtList.push_back("state:open");
-    cdtList.push_back("label:\"category:port-bug\"");
-    cdtList.push_back("repo:microsoft/vcpkg");
-    cdtList.push_back("sort:created");
-    gb.GetData(SearchCondition{ SearchType::SEARCHTYPE_ISSUE, SEARCHNAME_ISSUE }, cdtList, "result.xlsx", 50);
+    HRESULT Hr = ::CoInitialize(NULL);
+    if (FAILED(Hr)) return 0;
 
-	return 0;
+    TestFrame* pFrame = new TestFrame();
+    if (pFrame == NULL) return 0;
+    pFrame->Create(NULL, _T("TestWindow"), UI_WNDSTYLE_FRAME, 0, 0, 0, 0, 0);
+    pFrame->CenterWindow();
+    ::ShowWindow(*pFrame, SW_SHOW);
+
+    CPaintManagerUI::MessageLoop();
+
+    ::CoUninitialize();
+
+    return 0;
 }

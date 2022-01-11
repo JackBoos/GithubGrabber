@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<Window size="800,600" caption="0,0,0,25" bordercolor="0xFF768D9B" bordersize="1">
+	<Default shared="true" name="Option" value="textcolor=&quot;#FFbac0c5&quot; hottextcolor=&quot;#FF386382&quot; selectedtextcolor=&quot;#FF386382&quot; disabledtextcolor=&quot;#FFbac0c5&quot; textpadding=&quot;18,2,0,0&quot; align=&quot;left&quot; selectedimage=&quot;file='RadioBtnSel.png' source='0,0,13,13' dest='0,9,14,23'&quot; normalimage=&quot;file='RadioBtnNon.png' source='0,0,13,13' dest='0,9,14,23'&quot;" />
+	<VerticalLayout width="800" height="600" inset="1,1,1,1" bkcolor="0xFFF0F0F0" bordercolor="0xFF768D9B" bordersize="1">
+		<VerticalLayout height="500" padding="0,20,0,0">
+			<HorizontalLayout name="base_url_hdr" height="61" pos="0,0,0,61" padding="5,0,0,0">
+				<Label text="基础url" width="70" height="30" pos="0,0,70,30" />
+				<Edit name="BASE_URL" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+			</HorizontalLayout>
+			<HorizontalLayout name="usr_hdr" height="59" pos="0,0,0,59" padding="5,0,0,0">
+				<Label text="用户名" width="70" height="30" pos="0,0,70,30" />
+				<Edit name="USERNAME" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+			</HorizontalLayout>
+			<HorizontalLayout name="token_hdr" height="59" pos="0,0,0,59" padding="5,0,0,0">
+				<Label text="Token" width="70" height="30" pos="0,0,70,30" />
+				<Edit name="TOKEN" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_TOKEN" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			</HorizontalLayout>
+			<HorizontalLayout name="file_path_hdr" height="59" pos="0,0,0,59" padding="5,0,0,0">
+				<Label text="保存文件至" width="70" height="30" pos="0,0,70,30" />
+				<Edit name="FILE_PATH" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILE_PATH" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			</HorizontalLayout>
+			<HorizontalLayout name="rule_hdr" height="59" pos="0,0,0,59" padding="5,0,0,0">
+				<Label text="规则" width="70" height="30" pos="0,0,70,30" />
+				<Edit name="RULES" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_RULE" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			</HorizontalLayout>
+			<HorizontalLayout name="rule_hdr" height="59" pos="0,0,0,59" padding="5,0,0,0">
+				<Label text="类型" width="70" height="30" pos="0,0,70,30" />
+				<Option name="SET_ISSUE" width="64" group="radio" text="issue" textcolor="#FF000000" textpadding="25,-25,10,0" style="radio_style" autocalcwidth="true" />
+				<Option name="SET_PR" width="64" group="radio" text="PR" textcolor="#FF000000" textpadding="25,-25,10,0" style="radio_style" autocalcwidth="true" />
+			</HorizontalLayout>
+		</VerticalLayout>
+		<HorizontalLayout height="89">
+			<Button width="100" height="30" name="GET_DATA" text="获取数据" pos="0,0,100,30" padding="100,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			<Button width="100" height="30" name="CLOSE" text="关闭" pos="0,0,100,30" padding="400,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+		</HorizontalLayout>
+	</VerticalLayout>
+</Window>
