@@ -36,4 +36,16 @@ private:
     CEditUI* m_editFilePath;
     COptionUI* m_optionIssue;
     COptionUI* m_optionPR;
+    CCheckBoxUI* m_boxOpened;
+    CCheckBoxUI* m_boxClosed;
+    CCheckBoxUI* m_boxPortBug;
+    CCheckBoxUI* m_boxPortFeature;
+    CCheckBoxUI* m_boxQuestion;
+    CCheckBoxUI* m_boxNeedsRepro;
+    CCheckBoxUI* m_boxNeedMoreInfo;
+    CCheckBoxUI* m_boxDocument;
+    CCheckBoxUI* m_boxVcpkgBug;
+    CCheckBoxUI* m_boxVcpkgFeature;
+    COptionUI* m_optionSortLower;
+    COptionUI* m_optionSortHigher;
 };

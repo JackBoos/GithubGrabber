@@ -47,7 +47,7 @@ bool urlParser::Init(const char* username, const char* token)
             curl_slist_free_all(headers);
         }
         curl_easy_cleanup(curl);
-        return true;
+        return res == 0;
     }
 
     return true;

@@ -12,6 +12,18 @@ TestFrame::TestFrame()
     m_editFilePath = nullptr;
     m_optionIssue = nullptr;
     m_optionPR = nullptr;
+    m_boxOpened = nullptr;
+    m_boxClosed = nullptr;
+    m_boxPortBug = nullptr;
+    m_boxPortFeature = nullptr;
+    m_boxQuestion = nullptr;
+    m_boxNeedsRepro = nullptr;
+    m_boxNeedMoreInfo = nullptr;
+    m_boxDocument = nullptr;
+    m_boxVcpkgBug = nullptr;
+    m_boxVcpkgFeature = nullptr;
+    m_optionSortLower = nullptr;
+    m_optionSortHigher = nullptr;
 }
 
 TestFrame::~TestFrame()
@@ -41,8 +53,20 @@ void TestFrame::InitWindow()
     m_editUserName = (CEditUI*)m_PaintManager.FindControl(_T("USERNAME"));
     m_editToken = (CEditUI*)m_PaintManager.FindControl(_T("TOKEN"));
     m_editFilePath = (CEditUI*)m_PaintManager.FindControl(_T("FILE_PATH"));
-    m_optionIssue = (COptionUI*)m_PaintManager.FindControl(_T("SET_ISSUE"));
-    m_optionPR = (COptionUI*)m_PaintManager.FindControl(_T("SET_PR"));
+    m_optionIssue = (COptionUI*)m_PaintManager.FindControl(_T("SEARCH_TYPE_ISSUE"));
+    m_optionPR = (COptionUI*)m_PaintManager.FindControl(_T("SEARCH_TYPE_PR"));
+    m_boxOpened = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_OPENED"));
+    m_boxClosed = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_CLOSED"));
+    m_boxPortBug = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_PORT_BUG"));
+    m_boxPortFeature = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_PORT_FEATURE"));
+    m_boxQuestion = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_QUESTION"));
+    m_boxNeedsRepro = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_NEEDS_REPRO"));
+    m_boxNeedMoreInfo = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_NEED_MORE_INFO"));
+    m_boxDocument = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_DOCUMENT"));
+    m_boxVcpkgBug = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_VCPKG_BUG"));
+    m_boxVcpkgFeature = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_VCPKG_FEATURE"));
+    m_optionSortLower = (COptionUI*)m_PaintManager.FindControl(_T("SORT_WITH_CERATE_TIME_LOWER"));
+    m_optionSortHigher = (COptionUI*)m_PaintManager.FindControl(_T("SORT_WITH_CERATE_TIME_HIGHER"));
 
     m_editBaseUrl->SetText(_T("https://api.github.com/search/"));
     m_editRepoUrl->SetText(_T("microsoft/vcpkg"));
@@ -50,8 +74,6 @@ void TestFrame::InitWindow()
 
     std::wstring filepath = GetCurrentPath() + _T("result.xlsx");
     m_editFilePath->SetText(filepath.c_str());
-
-    m_optionIssue->Activate();
 }
 
 LRESULT TestFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
@@ -90,25 +112,25 @@ void TestFrame::Notify(TNotifyUI& msg)
 
 void TestFrame::OnGetData()
 {
-    wchar_t* baseUrl = (wchar_t*)m_editBaseUrl->GetText().GetData();
+    std::wstring baseUrl = (wchar_t*)m_editBaseUrl->GetText().GetData();
     char szBaseUrl[256];
-    sprintf(szBaseUrl, "%ws", baseUrl);
+    sprintf(szBaseUrl, "%ws", baseUrl.c_str());
 
-    wchar_t* repoName = (wchar_t*)m_editRepoUrl->GetText().GetData();
+    std::wstring repoName = (wchar_t*)m_editRepoUrl->GetText().GetData();
     char szRepoName[256];
-    sprintf(szRepoName, "%ws", repoName);
+    sprintf(szRepoName, "%ws", repoName.c_str());
 
-    wchar_t* userName = (wchar_t*)m_editUserName->GetText().GetData();
+    std::wstring userName = (wchar_t*)m_editUserName->GetText().GetData();
     char szUserName[256];
-    sprintf(szUserName, "%ws", userName);
+    sprintf(szUserName, "%ws", userName.c_str());
 
-    wchar_t* token = (wchar_t*)m_editToken->GetText().GetData();
+    std::wstring token = (wchar_t*)m_editToken->GetText().GetData();
     char szToken[256];
-    sprintf(szToken, "%ws", token);
+    sprintf(szToken, "%ws", token.c_str());
 
-    wchar_t* filePath = (wchar_t*)m_editFilePath->GetText().GetData();
+    std::wstring filePath = m_editFilePath->GetText().GetData();
     char szFilePath[256];
-    sprintf(szFilePath, "%ws", _T("result.xlsx"));// filePath);
+    sprintf(szFilePath, "%ws", filePath.c_str());
 
     BOOL bIsIssue = m_optionIssue->IsSelected();
     SearchType search_type = bIsIssue ? SearchType::SEARCHTYPE_ISSUE : SearchType::SEARCHTYPE_PR;
@@ -138,12 +160,40 @@ void TestFrame::OnGetData()
     else
         cdtList.push_back("type:pr");
 
-    cdtList.push_back("state:open");
-    cdtList.push_back("label:\"category:port-bug\"");
-    cdtList.push_back("sort:created");
+    if (m_boxOpened->IsSelected())
+        cdtList.push_back("state:open");
+    if (m_boxClosed->IsSelected())
+        cdtList.push_back("state:close");
+
+    if (m_boxPortBug->IsSelected())
+        cdtList.push_back("label:\"category:port-bug\"");
+    if (m_boxPortFeature->IsSelected())
+        cdtList.push_back("label:\"category:port-feature\"");
+    if (m_boxQuestion->IsSelected())
+        cdtList.push_back("label:\"category:question\"");
+    if (m_boxNeedsRepro->IsSelected())
+        cdtList.push_back("label:\"requires:repro\"");
+    if (m_boxNeedMoreInfo->IsSelected())
+        cdtList.push_back("label:\"requires:more-information\"");
+    if (m_boxDocument->IsSelected())
+        cdtList.push_back("label:\"category:documentation\"");
+    if (m_boxVcpkgBug->IsSelected())
+        cdtList.push_back("label:\"category:vcpkg-bug\"");
+    if (m_boxVcpkgFeature->IsSelected())
+        cdtList.push_back("label:\"category:vcpkg-feature\"");
+
+    if (m_optionSortLower->IsSelected())
+        cdtList.push_back("sort:created-desc");
+    else
+        cdtList.push_back("sort:created-asc");
+
     if (!gb.GetData(SearchCondition{ search_type, search_type_message }, cdtList, szFilePath, 50))
     {
-        ::MessageBox(NULL, _T("Failed to get data"), _T(""), NULL);
+        ::MessageBox(NULL, _T("Download data success!"), _T(""), NULL);
+    }
+    else
+    {
+        ::MessageBox(NULL, _T("Failed to get data!"), _T(""), NULL);
     }
 }
 

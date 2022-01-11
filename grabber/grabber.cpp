@@ -63,11 +63,15 @@ bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, 
 
     // Request first page to get the item count
     std::string strCurrentUrl = strSubUrl + PAGE_KEYWORD + "1" + PER_PARGE_KEYWORD + szOnePageSize;
-    m_parser->GetData(strCurrentUrl.c_str(), outData);
+    bSuc = m_parser->GetData(strCurrentUrl.c_str(), outData);
+    if (!bSuc)
+        return bSuc;
 
     int iTotalItemSize = dataAnalysis::GetInstance().GetTotalSize(outData, GITHUB_TOTAL_COUNT_NAME);
     IteamDataList vData;
-    dataAnalysis::GetInstance().ParseData(outData, GITHUB_ITEAM_NAME, vData);
+    bSuc = dataAnalysis::GetInstance().ParseData(outData, GITHUB_ITEAM_NAME, vData);
+    if (!bSuc)
+        return bSuc;
 
     // Start from page 2
     const int getPage = ((int)((float)iTotalItemSize / (float)onePageCount) > (iTotalItemSize / onePageCount)) ? (iTotalItemSize / onePageCount) : (iTotalItemSize / onePageCount + 1);
@@ -78,10 +82,12 @@ bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, 
         outData.clear();
         strCurrentUrl = strSubUrl + PAGE_KEYWORD + szPageNum + PER_PARGE_KEYWORD + szOnePageSize;
         m_parser->GetData(strCurrentUrl.c_str(), outData);
-        dataAnalysis::GetInstance().ParseData(outData, GITHUB_ITEAM_NAME, vData);
+        bSuc = dataAnalysis::GetInstance().ParseData(outData, GITHUB_ITEAM_NAME, vData);
+        if (!bSuc)
+            return bSuc;
     }
 
-    excelExecuter::GetInstance().WriteToFile(outFile, vData);
+    bSuc = excelExecuter::GetInstance().WriteToFile(outFile, vData);
 
     // cleanup
     for (auto i = vData.begin(); i != vData.end(); i++)
