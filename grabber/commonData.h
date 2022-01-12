@@ -3,7 +3,7 @@
 #include <list>
 
 #define SEARCHNAME_ISSUE "issues"
-#define SEARCHNAME_PR "pr"
+#define SEARCHNAME_PR "issues"
 
 #define QUERY_KEYWORD "?q="
 #define PAGE_KEYWORD "&page="

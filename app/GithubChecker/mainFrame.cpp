@@ -359,6 +359,7 @@ void TestFrame::OnGetFilePath()
 
 void TestFrame::OnGetToken()
 {
+    ::MessageBox(NULL, _T("Use token will have permission to edit issue/PR state, please notice that!"), _T("Warning!"), NULL);
     OPENFILENAME ofn;
     TCHAR szFile[MAX_PATH] = _T("");
 
