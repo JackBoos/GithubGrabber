@@ -86,6 +86,12 @@ bool excelExecuter::WriteToFile(const char* filePath, const IteamDataList& dataL
                         xlsxiowrite_add_cell_string(writer, data.c_str());
                 }
                 break;
+                case DataType::DATATYPE_BOOLEAN:
+                {
+                    const bool data = *(bool*)(j->value);
+                    xlsxiowrite_add_cell_int(writer, data ? 1 : 0);
+                }
+                break;
                 default:
                     break;
                 }

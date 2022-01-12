@@ -153,7 +153,7 @@ void TestFrame::OnGetData()
         return;
     }
 
-    grabber gb(szBaseUrl, szUserName, szToken);
+    GithubGrabber::grabber gb(szBaseUrl, szUserName, szToken);
     gb.Init();
 
     ConditionList cdtList;

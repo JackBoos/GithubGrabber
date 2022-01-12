@@ -31,13 +31,15 @@ bool urlParser::Init(const char* username, const char* token)
     {
         if (username && *username)
         {
-            std::string name_token = username;
+            std::string strToken = username;
+            strToken = username;
             if (token && *token)
             {
-                name_token += ":";
-                name_token += token;
+                strToken += ":";
+                strToken += token;
+                m_token = strToken;
             }
-            curl_easy_setopt(curl, CURLOPT_USERPWD, name_token);
+            curl_easy_setopt(curl, CURLOPT_USERPWD, m_token.c_str());
         }
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_URL, m_currUrlBase.c_str());
@@ -83,6 +85,44 @@ bool urlParser::GetData(const char* extUrl, std::string& outData)
         return res == 0;
     }
     return true;
+}
+
+bool urlParser::PostData(const char* extUrl, const std::string& inData, const char* customRequest)
+{
+    if (!extUrl || !(*extUrl))
+        return false;
+
+    if (m_token.empty())
+        return false;
+
+    std::string subUrl = m_currUrlBase;
+    std::string realSubUrl = extUrl;
+    realSubUrl = std::regex_replace(realSubUrl, std::regex(" "), "%20");
+    realSubUrl = std::regex_replace(realSubUrl, std::regex("\""), "%22");
+    subUrl.append(realSubUrl);
+
+    CURL *curl;
+    CURLcode res;
+
+    struct curl_slist *headers = NULL;
+    headers = curl_slist_append(headers, GITHUB_REQUIRED_USER_AGENT_HEADER);
+    headers = curl_slist_append(headers, GITHUB_REQUIRED_USER_AGENT_HEADER);
+    curl = curl_easy_init();
+    if (curl)
+    {
+        if (customRequest && *customRequest)
+            curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, customRequest);
+        curl_easy_setopt(curl, CURLOPT_USERPWD, m_token.c_str());
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(curl, CURLOPT_URL, subUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, inData.c_str());    // 指定post内容
+        res = curl_easy_perform(curl);
+        curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+        return res == 0;
+    }
+
+    return res == 0;
 }
 
 size_t urlParser::AppendData(void *ptr, size_t size, size_t nmemb, void *stream)

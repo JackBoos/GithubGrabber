@@ -2,9 +2,9 @@
 
 add_executable (GithubGrabber WIN32 "GithubGrabber.cpp" "mainFrame.cpp")
 
-target_include_directories(GithubGrabber PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(GithubGrabber PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
-# TODO: Add tests and install targets if needed.
+target_compile_definitions(GithubGrabber PRIVATE _CRT_SECURE_NO_WARNINGS)
 
 target_link_libraries(GithubGrabber PRIVATE dui::duilib grabber)
 

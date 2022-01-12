@@ -78,6 +78,11 @@ bool dataAnalysis::ParseData(const std::string& inString, const char* subLable, 
                     datatype = DataType::DATATYPE_STRING;
                 }
                     break;
+                case Json::ValueType::booleanValue:
+                {
+                    datatype = DataType::DATATYPE_BOOLEAN;
+                }
+                break;
                 default:
                     break;
                 }
@@ -102,6 +107,13 @@ bool dataAnalysis::ParseData(const std::string& inString, const char* subLable, 
                         {
                             iData = currentItem[names[j]].asCString();
                         }
+                    }
+                    break;
+                    case DataType::DATATYPE_BOOLEAN:
+                    {
+                        pData = new bool;
+                        bool& iData = *(bool*)pData;
+                        iData = currentItem[names[j]].asBool();
                     }
                     break;
                     default:

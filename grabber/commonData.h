@@ -12,14 +12,26 @@
 #define GITHUB_TOTAL_COUNT_NAME "total_count"
 #define GITHUB_ITEAM_NAME "items"
 
+#define GITHUB_REPOS_NAME "repos/"
+#define GITHUB_ISSUES_NAME "/issues/"
+#define GITHUB_PRS_NAME "/pulls/"
+#define GITHUB_COMMENTS_NAME "/comments"
+
 #define GITHUB_REQUIRED_USER_AGENT_HEADER "User-Agent: github-grabber-app"
 #define GITHUB_REQUIRED_ACCEPT_HEADER "Accept: application/vnd.github.v3+json"
+
+#define GITHUB_OP_PATCH "PATCH"
+
+#define GITHUB_BODY_START "{\"body\":\""
+#define GITHUB_BODY_END "\"}"
+#define GITHUB_CLOSE_ISSUE_PR_BODY "{\"state\":\"closed\"}"
 
 typedef enum _DataType
 {
     DATATYPE_UNKNOWN = 0,
     DATATYPE_INT = 1,
     DATATYPE_STRING = 2,
+    DATATYPE_BOOLEAN = 3,
 }DataType;
 
 typedef enum _SearchType
@@ -28,6 +40,20 @@ typedef enum _SearchType
     SEARCHTYPE_ISSUE = 1,
     SEARCHTYPE_PR = 2,
 }SearchType;
+
+typedef enum _ExecuteType
+{
+    EXECUTE_TYPE_UNKNOWN = 0,
+    EXECUTE_TYPE_ADD_COMMENT = 1,
+    EXECUTE_TYPE_CLOSE_ISSUE_PR = 2,
+}ExecuteType;
+
+typedef enum _ExecuteOpDest
+{
+    EXECUTE_OP_TO_NONE = 0,
+    EXECUTE_OP_TO_ASSIGNER = 1,
+    EXECUTE_OP_TO_AUTHOR = 2,
+}ExecuteOpDest;
 
 typedef struct _SearchCondition
 {
@@ -41,6 +67,14 @@ typedef struct _ItemData
     DataType type;
     void* value;
 }ItemData;
+
+typedef struct _ExecuteData
+{
+    ExecuteType type;
+    unsigned int issue_pr_id;
+    ExecuteOpDest dst;
+    std::string comment;
+}ExecuteData;
 
 typedef std::list<ItemData> OneIteamDataList;
 typedef std::list<OneIteamDataList> IteamDataList;

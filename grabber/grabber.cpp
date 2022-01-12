@@ -4,6 +4,8 @@
 #include "excelExecuter.h"
 #include <string>
 
+using namespace GithubGrabber;
+
 grabber::grabber(const char* baseUrl, const char* username, const char* token)
 {
     bInit = false;
@@ -103,4 +105,61 @@ bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, 
     vData.swap(IteamDataList());
 
     return bSuc;
+}
+
+bool grabber::Execute(const std::string& repo, SearchType type, const ExecuteData& data)
+{
+    if (repo.empty() || type == SearchType::SEARCHTYPE_UNKNOWN || data.type == ExecuteType::EXECUTE_TYPE_UNKNOWN)
+        return false;
+
+    std::string subUrl = GITHUB_REPOS_NAME;
+    subUrl += repo;
+    switch (type)
+    {
+    case SearchType::SEARCHTYPE_ISSUE:
+    {
+        subUrl += GITHUB_ISSUES_NAME;
+    }
+    break;
+    case SearchType::SEARCHTYPE_PR:
+    {
+        subUrl += GITHUB_PRS_NAME;
+    }
+    break;
+    default:
+        return false;
+        break;
+    }
+
+    char szIssueId[16] = { 0 };
+    itoa(data.issue_pr_id, szIssueId, 10);
+    subUrl += szIssueId;
+
+    switch (data.type)
+    {
+    case ExecuteType::EXECUTE_TYPE_ADD_COMMENT:
+    {
+        subUrl += GITHUB_COMMENTS_NAME;
+
+        std::string strComment = GITHUB_BODY_START;
+        if (data.dst != ExecuteOpDest::EXECUTE_OP_TO_NONE)
+        {
+            //strComment = "@" + data.dst + " ";
+        }
+        strComment += data.comment;
+        strComment += GITHUB_BODY_END;
+        return m_parser->PostData(subUrl.c_str(), strComment);
+    }
+    break;
+    case ExecuteType::EXECUTE_TYPE_CLOSE_ISSUE_PR:
+    {
+        return m_parser->PostData(subUrl.c_str(), GITHUB_CLOSE_ISSUE_PR_BODY, GITHUB_OP_PATCH);
+    }
+    break;
+    default:
+        return false;
+        break;
+    }
+
+    return true;
 }
