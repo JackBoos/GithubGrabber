@@ -44,7 +44,7 @@ CDuiString TestFrame::GetSkinFolder()
 
 CDuiString TestFrame::GetSkinFile()
 {
-    return _T("mainFrame.xml");
+    return _T("checkerMainFrame.xml");
 }
 
 LPCTSTR TestFrame::GetWindowClassName(void) const

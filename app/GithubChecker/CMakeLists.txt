@@ -14,3 +14,8 @@ target_compile_definitions(GithubChecker PRIVATE _CRT_SECURE_NO_WARNINGS)
 target_link_libraries(GithubChecker PRIVATE dui::duilib grabber)
 
 install(TARGETS GithubChecker RUNTIME DESTINATION bin)
+
+file(GLOB APP_GRABBER_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/*.png")
+list(APPEND APP_GRABBER_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/checkerMainFrame.xml")
+
+install(FILES ${APP_GRABBER_RESOURCES} DESTINATION bin)

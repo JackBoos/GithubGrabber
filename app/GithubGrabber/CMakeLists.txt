@@ -14,3 +14,8 @@ target_compile_definitions(GithubGrabber PRIVATE _CRT_SECURE_NO_WARNINGS)
 target_link_libraries(GithubGrabber PRIVATE dui::duilib grabber)
 
 install(TARGETS GithubGrabber RUNTIME DESTINATION bin)
+
+file(GLOB APP_CHECKER_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/*.png")
+list(APPEND APP_CHECKER_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/grabberMainFrame.xml")
+
+install(FILES ${APP_CHECKER_RESOURCES} DESTINATION bin)
