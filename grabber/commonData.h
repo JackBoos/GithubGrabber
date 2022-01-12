@@ -12,6 +12,9 @@
 #define GITHUB_TOTAL_COUNT_NAME "total_count"
 #define GITHUB_ITEAM_NAME "items"
 
+#define GITHUB_SEARCH_BASE_URL "https://api.github.com/search/"
+#define GITHUB_SEARCH_OPERATE_URL "https://api.github.com/"
+
 #define GITHUB_REPOS_NAME "repos/"
 #define GITHUB_ISSUES_NAME "/issues/"
 #define GITHUB_PRS_NAME "/pulls/"
@@ -63,6 +66,10 @@ typedef struct _SearchCondition
 
 typedef struct _ItemData
 {
+    bool operator == (const std::string& dst) const
+    {
+        return (name == dst);
+    }
     std::string name;
     DataType type;
     void* value;

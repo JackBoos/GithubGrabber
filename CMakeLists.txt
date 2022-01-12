@@ -2,7 +2,9 @@
 
 project(GithubGrabber CXX)
 
-option(BUILD_APP "Build App" ON)
+option(BUILD_APPS "Build Apps" ON)
+cmake_dependent_option(BUILD_APP_Grabber "Build App Grabber" ON BUILD_APPS OFF)
+cmake_dependent_option(BUILD_APP_Checker "Build App Checker" ON BUILD_APPS OFF)
 
 # For core
 find_package(CURL CONFIG REQUIRED)
@@ -20,7 +22,7 @@ endif()
 add_subdirectory(grabber)
 
 # For Gui
-if (BUILD_APP)
+if (BUILD_APPS)
 	find_package(duilib CONFIG REQUIRED)
 	add_subdirectory(app)
 endif()

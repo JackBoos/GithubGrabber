@@ -14,7 +14,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
 
     TestFrame* pFrame = new TestFrame();
     if (pFrame == NULL) return 0;
-    pFrame->Create(NULL, _T("TestWindow"), UI_WNDSTYLE_FRAME, 0, 0, 0, 0, 0);
+    pFrame->Create(NULL, _T("GithubGrabber"), UI_WNDSTYLE_FRAME, 0, 0, 0, 0, 0);
     pFrame->CenterWindow();
     ::ShowWindow(*pFrame, SW_SHOW);
 

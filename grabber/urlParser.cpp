@@ -22,7 +22,7 @@ bool urlParser::Init(const char* username, const char* token)
     if (m_currUrlBase.empty())
         return false;
     CURL *curl;
-    CURLcode res;
+    CURLcode res = CURLE_OK;
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, GITHUB_REQUIRED_USER_AGENT_HEADER);
     headers = curl_slist_append(headers, GITHUB_REQUIRED_USER_AGENT_HEADER);
@@ -44,15 +44,21 @@ bool urlParser::Init(const char* username, const char* token)
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_URL, m_currUrlBase.c_str());
         res = curl_easy_perform(curl);
-        if (res != 0) {
+        if (res != CURLE_OK) {
 
             curl_slist_free_all(headers);
         }
         curl_easy_cleanup(curl);
-        return res == 0;
+        return res == CURLE_OK;
     }
 
-    return true;
+    return false;
+}
+
+void urlParser::ResetBaseUrl(const char* baseurl)
+{
+    if (baseurl && *baseurl)
+        m_currUrlBase = baseurl;
 }
 
 bool urlParser::GetData(const char* extUrl, std::string& outData)
@@ -67,7 +73,7 @@ bool urlParser::GetData(const char* extUrl, std::string& outData)
     subUrl.append(realSubUrl);
 
     CURL *curl;
-    CURLcode res;
+    CURLcode res = CURLE_OK;
 
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, GITHUB_REQUIRED_USER_AGENT_HEADER);
@@ -82,9 +88,9 @@ bool urlParser::GetData(const char* extUrl, std::string& outData)
         res = curl_easy_perform(curl);
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
-        return res == 0;
+        return res == CURLE_OK;
     }
-    return true;
+    return false;
 }
 
 bool urlParser::PostData(const char* extUrl, const std::string& inData, const char* customRequest)
@@ -102,7 +108,7 @@ bool urlParser::PostData(const char* extUrl, const std::string& inData, const ch
     subUrl.append(realSubUrl);
 
     CURL *curl;
-    CURLcode res;
+    CURLcode res = CURLE_OK;
 
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, GITHUB_REQUIRED_USER_AGENT_HEADER);
@@ -110,19 +116,22 @@ bool urlParser::PostData(const char* extUrl, const std::string& inData, const ch
     curl = curl_easy_init();
     if (curl)
     {
+        std::string outData;
         if (customRequest && *customRequest)
             curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, customRequest);
         curl_easy_setopt(curl, CURLOPT_USERPWD, m_token.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_URL, subUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outData);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, urlParser::AppendData);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, inData.c_str());    // 指定post内容
         res = curl_easy_perform(curl);
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
-        return res == 0;
+        return res == CURLE_OK;
     }
 
-    return res == 0;
+    return false;
 }
 
 size_t urlParser::AppendData(void *ptr, size_t size, size_t nmemb, void *stream)

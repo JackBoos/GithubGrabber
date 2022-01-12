@@ -10,6 +10,8 @@ public:
 
     bool Init(const char* username = nullptr, const char* token = nullptr);
 
+    void ResetBaseUrl(const char* baseurl);
+
     bool GetData(const char* extUrl, std::string& outData);
 
     bool PostData(const char* extUrl, const std::string& inData = std::string(), const char* customRequest = nullptr);

@@ -38,7 +38,15 @@ bool grabber::Init()
     return bInit;
 }
 
-bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount, const ConditionList& filterConditions)
+void grabber::ResetBaseUrl(const char* baseurl)
+{
+    if (!baseurl || !*baseurl)
+        return;
+    m_baseUrl = baseurl;
+    m_parser->ResetBaseUrl(baseurl);
+}
+
+bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount, const ConditionList& filterConditions, IteamDataList* outDataList, bool bSave)
 {
     if (!bInit || !outFile || !(*outFile) || !onePageCount)
         return false;
@@ -89,20 +97,28 @@ bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, 
             return bSuc;
     }
 
-    bSuc = excelExecuter::GetInstance().WriteToFile(outFile, vData, filterConditions);
+    if (bSave)
+        bSuc = excelExecuter::GetInstance().WriteToFile(outFile, vData, filterConditions);
 
     // cleanup
-    for (auto i = vData.begin(); i != vData.end(); i++)
+    if (outDataList)
     {
-        for (auto j = i->begin(); j != i->end(); j++)
+        vData.swap(*outDataList);
+    }
+    else
+    {
+        for (auto i = vData.begin(); i != vData.end(); i++)
         {
-            if (j->value)
+            for (auto j = i->begin(); j != i->end(); j++)
             {
-                delete j->value;
+                if (j->value)
+                {
+                    delete j->value;
+                }
             }
         }
+        vData.swap(IteamDataList());
     }
-    vData.swap(IteamDataList());
 
     return bSuc;
 }
