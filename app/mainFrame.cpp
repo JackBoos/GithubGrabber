@@ -53,6 +53,7 @@ void TestFrame::InitWindow()
     m_editUserName = (CEditUI*)m_PaintManager.FindControl(_T("USERNAME"));
     m_editToken = (CEditUI*)m_PaintManager.FindControl(_T("TOKEN"));
     m_editFilePath = (CEditUI*)m_PaintManager.FindControl(_T("FILE_PATH"));
+    m_editFilterPath = (CEditUI*)m_PaintManager.FindControl(_T("FILTER_RULES"));
     m_optionIssue = (COptionUI*)m_PaintManager.FindControl(_T("SEARCH_TYPE_ISSUE"));
     m_optionPR = (COptionUI*)m_PaintManager.FindControl(_T("SEARCH_TYPE_PR"));
     m_boxOpened = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_OPENED"));
@@ -67,10 +68,6 @@ void TestFrame::InitWindow()
     m_boxVcpkgFeature = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_VCPKG_FEATURE"));
     m_optionSortLower = (COptionUI*)m_PaintManager.FindControl(_T("SORT_WITH_CERATE_TIME_LOWER"));
     m_optionSortHigher = (COptionUI*)m_PaintManager.FindControl(_T("SORT_WITH_CERATE_TIME_HIGHER"));
-
-    m_editBaseUrl->SetText(_T("https://api.github.com/search/"));
-    m_editRepoUrl->SetText(_T("microsoft/vcpkg"));
-    m_editUserName->SetText(_T("JackBoosY"));
 
     std::wstring filepath = GetCurrentPath() + _T("result.xlsx");
     m_editFilePath->SetText(filepath.c_str());
@@ -107,6 +104,10 @@ void TestFrame::Notify(TNotifyUI& msg)
         {
             OnGetToken();
         }
+        else if (msg.pSender->GetName() == _T("GET_FILTER_RULES"))
+        {
+            OnGetFilters();
+        }
     }
 }
 
@@ -131,6 +132,10 @@ void TestFrame::OnGetData()
     std::wstring filePath = m_editFilePath->GetText().GetData();
     char szFilePath[256];
     sprintf(szFilePath, "%ws", filePath.c_str());
+
+
+    ConditionList filterConditions;
+    GetFilterConditions(filterConditions);
 
     BOOL bIsIssue = m_optionIssue->IsSelected();
     SearchType search_type = bIsIssue ? SearchType::SEARCHTYPE_ISSUE : SearchType::SEARCHTYPE_PR;
@@ -187,7 +192,7 @@ void TestFrame::OnGetData()
     else
         cdtList.push_back("sort:created-asc");
 
-    if (gb.GetData(SearchCondition{ search_type, search_type_message }, cdtList, szFilePath, 50))
+    if (gb.GetData(SearchCondition{ search_type, search_type_message }, cdtList, szFilePath, 50, filterConditions))
     {
         ::MessageBox(NULL, _T("Download data success!"), _T(""), NULL);
     }
@@ -222,6 +227,33 @@ void TestFrame::OnGetFilePath()
     if (wcscmp(szFile + wcslen(szFile) - wcslen(_T(".xlsx")), _T(".xlsx")))
         wcscat(szFile, _T(".xlsx"));
     m_editFilePath->SetText(szFile);
+}
+
+void TestFrame::GetFilterConditions(ConditionList& conditions)
+{
+    std::wstring filterCondition = m_editFilterPath->GetText().GetData();
+    if (filterCondition.empty())
+        return;
+
+    char* szFilterCondition = new char[filterCondition.length() + 1];
+    sprintf(szFilterCondition, "%ws", filterCondition.c_str());
+
+    char* startPtr = szFilterCondition;
+    char* currPtr = startPtr;
+    while (*currPtr != '\0')
+    {
+        if (*currPtr == ';')
+        {
+            std::string strTmp;
+            strTmp.insert(0, startPtr, currPtr - startPtr);
+            conditions.push_back(strTmp);
+            startPtr = currPtr + 1;
+        }
+
+        currPtr++;
+    }
+
+    delete[] szFilterCondition;
 }
 
 void TestFrame::OnGetRule()
@@ -324,6 +356,57 @@ void TestFrame::OnGetToken()
     swprintf(woutput, 100, L"%hs", strToken.c_str());
 
     m_editToken->SetText(woutput);
+}
+
+void TestFrame::OnGetFilters()
+{
+    OPENFILENAME ofn;
+    TCHAR szFile[MAX_PATH] = _T("");
+
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = *this;
+    ofn.lpstrFile = szFile;
+    ofn.nMaxFile = sizeof(szFile);
+    ofn.lpstrFilter = _T(".txt");
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFileTitle = NULL;
+    ofn.nMaxFileTitle = 0;
+    ofn.lpstrInitialDir = GetCurrentPath().c_str();
+    ofn.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+    if (!GetOpenFileName(&ofn))
+    {
+        return;
+    }
+
+    char output[256];
+    sprintf(output, "%ws", szFile);
+
+    std::fstream fs;
+    fs.open(output);
+
+    if (!fs.is_open())
+    {
+        ::MessageBox(NULL, _T("Failed to open token file!"), _T(""), NULL);
+        return;
+    }
+
+    std::string strFilters;
+    fs >> strFilters;
+
+    fs.close();
+
+    if (strFilters.empty())
+    {
+        ::MessageBox(NULL, _T("Filter condition is empty!"), _T(""), NULL);
+        return;
+    }
+
+    wchar_t woutput[1024];
+    swprintf(woutput, 100, L"%hs", strFilters.c_str());
+
+    m_editFilterPath->SetText(woutput);
 }
 
 std::wstring TestFrame::GetCurrentPath()

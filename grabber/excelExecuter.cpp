@@ -1,6 +1,7 @@
 #include "excelExecuter.h"
 #include <xlsxio_version.h>
 #include <xlsxio_write.h>
+#include <vector>
 
 #define DEFAULT_LABEL_NAME "data"
 const int DEFAULT_COLUMN_LENGTH = 10;
@@ -29,7 +30,7 @@ excelExecuter& excelExecuter::GetInstance()
     }
 }
 
-bool excelExecuter::WriteToFile(const char* filePath, const IteamDataList& dataList)
+bool excelExecuter::WriteToFile(const char* filePath, const IteamDataList& dataList, const ConditionList& filterConditions)
 {
     if (!filePath || !(*filePath))
         return false;
@@ -46,36 +47,48 @@ bool excelExecuter::WriteToFile(const char* filePath, const IteamDataList& dataL
         return false;
     }
 
+    std::vector<int> vPosition;
     // Writer row names
     const auto& items = dataList.begin();
-    for (auto i = items->begin(); i != items->end(); i++)
+    int pos = 0;
+    for (auto i = items->begin(); i != items->end(); i++, pos++)
     {
-        xlsxiowrite_add_column(writer, i->name.c_str(), DEFAULT_COLUMN_LENGTH);
+        auto found = find(filterConditions.begin(), filterConditions.end(), i->name);
+        if (filterConditions.empty() || found != filterConditions.end())
+        {
+            if (!filterConditions.empty())
+                vPosition.push_back(pos);
+            xlsxiowrite_add_column(writer, i->name.c_str(), DEFAULT_COLUMN_LENGTH);
+        }
     }
     xlsxiowrite_next_row(writer);
     // Start to write data
     for (auto i = dataList.begin(); i != dataList.end(); i++)
     {
         const auto& currItem = i;
-        for (auto j = currItem->begin(); j != currItem->end(); j++)
+        int currPos = 0;
+        for (auto j = currItem->begin(); j != currItem->end(); j++, currPos++)
         {
-            switch (j->type)
+            if (find(vPosition.begin(), vPosition.end(), currPos) != vPosition.end())
             {
-            case DataType::DATATYPE_INT:
-            {
-                const int data = *(int*)(j->value);
-                xlsxiowrite_add_cell_int(writer, data);
-            }
-            break;
-            case DataType::DATATYPE_STRING:
-            {
-                const std::string& data = *(std::string*)(j->value);
-                if (data.length())
-                    xlsxiowrite_add_cell_string(writer, data.c_str());
-            }
-            break;
-            default:
+                switch (j->type)
+                {
+                case DataType::DATATYPE_INT:
+                {
+                    const int data = *(int*)(j->value);
+                    xlsxiowrite_add_cell_int(writer, data);
+                }
                 break;
+                case DataType::DATATYPE_STRING:
+                {
+                    const std::string& data = *(std::string*)(j->value);
+                    if (data.length())
+                        xlsxiowrite_add_cell_string(writer, data.c_str());
+                }
+                break;
+                default:
+                    break;
+                }
             }
         }
         xlsxiowrite_next_row(writer);

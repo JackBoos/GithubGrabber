@@ -11,7 +11,7 @@ public:
 
     bool Init();
 
-    bool GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount);
+    bool GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount, const ConditionList& filterConditions = ConditionList());
 private:
     bool bInit;
     std::string m_baseUrl;

@@ -7,27 +7,32 @@
 			<Label text="github数据获取器" width="800" height="30" pos="0,0,800,30" padding="10,0,0,0" />
 		</VerticalLayout>
 		<VerticalLayout height="600" padding="0,0,0,0">
-			<HorizontalLayout name="base_url_hdr" height="61" pos="0,0,0,61" padding="5,0,0,0">
+			<HorizontalLayout height="61" pos="0,0,0,61" padding="5,0,0,0">
 				<Label text="基础url" width="70" height="30" pos="0,0,70,30" />
-				<Edit name="BASE_URL" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Edit name="BASE_URL" width="580" height="30" text="https://api.github.com/search/" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
-			<HorizontalLayout name="base_url_hdr" height="61" pos="0,0,0,61" padding="5,0,0,0">
+			<HorizontalLayout height="61" pos="0,0,0,61" padding="5,0,0,0">
 				<Label text="repo" width="70" height="30" pos="0,0,70,30" />
-				<Edit name="REPO_NAME" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Edit name="REPO_NAME" width="580" height="30" text="microsoft/vcpkg" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
-			<HorizontalLayout name="usr_hdr" height="60" pos="0,0,0,60" padding="5,0,0,0">
+			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
 				<Label text="用户名" width="70" height="30" pos="0,0,70,30" />
-				<Edit name="USERNAME" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Edit name="USERNAME" width="580" height="30" text="JackBoosY" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
-			<HorizontalLayout name="token_hdr" height="60" pos="0,0,0,60" padding="5,0,0,0">
+			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
 				<Label text="Token" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="TOKEN" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_TOKEN" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
-			<HorizontalLayout name="file_path_hdr" height="60" pos="0,0,0,60" padding="5,0,0,0">
+			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
 				<Label text="保存文件至" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="FILE_PATH" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILE_PATH" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			</HorizontalLayout>
+			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
+				<Label text="过滤规则：分号分隔" width="118" height="30" pos="0,0,118,30" />
+				<Edit name="FILTER_RULES" width="532" height="30" text="number;state;title;created_at;updated_at;" pos="0,0,532,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILTER_RULES" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
 				<Label text="类型" width="70" height="30" pos="0,0,70,30" />

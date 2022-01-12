@@ -36,7 +36,7 @@ bool grabber::Init()
     return bInit;
 }
 
-bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount)
+bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount, const ConditionList& filterConditions)
 {
     if (!bInit || !outFile || !(*outFile) || !onePageCount)
         return false;
@@ -87,7 +87,7 @@ bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, 
             return bSuc;
     }
 
-    bSuc = excelExecuter::GetInstance().WriteToFile(outFile, vData);
+    bSuc = excelExecuter::GetInstance().WriteToFile(outFile, vData, filterConditions);
 
     // cleanup
     for (auto i = vData.begin(); i != vData.end(); i++)

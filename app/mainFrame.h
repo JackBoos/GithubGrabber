@@ -4,6 +4,8 @@
 #include <objbase.h>
 #include <UIlib.h>
 
+#include "commonData.h"
+
 using namespace DuiLib;
 
 class TestFrame : public WindowImplBase
@@ -25,7 +27,9 @@ private:
     void OnGetRule();
     void OnGetFilePath();
     void OnGetToken();
+    void OnGetFilters();
     std::wstring GetCurrentPath();
+    void GetFilterConditions(ConditionList& conditions);
 
 private:
     CEditUI* m_editBaseUrl;
@@ -34,6 +38,7 @@ private:
     CEditUI* m_editUserName;
     CEditUI* m_editToken;
     CEditUI* m_editFilePath;
+    CEditUI* m_editFilterPath;
     COptionUI* m_optionIssue;
     COptionUI* m_optionPR;
     CCheckBoxUI* m_boxOpened;
