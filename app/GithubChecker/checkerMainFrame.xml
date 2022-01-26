@@ -4,41 +4,43 @@
 	<Default shared="true" name="CheckBox" value="textcolor=&quot;#FFbac0c5&quot; hottextcolor=&quot;#FF386382&quot; selectedtextcolor=&quot;#FF386382&quot; disabledtextcolor=&quot;#FFbac0c5&quot; textpadding=&quot;20,2,0,0&quot; align=&quot;left&quot; selectedimage=&quot;file='checked.png' dest='0,8,16,24'&quot; normalimage=&quot;file='unchecked.png' dest='0,8,16,24'&quot;" />
 	<VerticalLayout width="800" height="700" inset="1,1,1,1" bkcolor="0xFFF0F0F0" bordercolor="0xFF768D9B" bordersize="1">
 		<VerticalLayout height="40" padding="0,0,0,0">
-			<Label text="github issue/PR 检查器" width="800" height="30" pos="0,0,800,30" padding="10,0,0,0" />
+			<Label text="github issue/PR Checker" width="800" height="30" pos="0,0,800,30" padding="10,0,0,0" />
 		</VerticalLayout>
-		<VerticalLayout height="253" pos="0,0,0,253" padding="0,0,0,0">
+		<VerticalLayout height="311" pos="0,0,0,311" padding="0,0,0,0">
 			<HorizontalLayout height="35" pos="0,0,0,35" padding="5,0,0,0">
 				<Label text="repo" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="REPO_NAME" width="580" height="30" text="microsoft/vcpkg" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="37" pos="0,0,0,37" padding="5,0,0,0">
-				<Label text="用户名" width="70" height="30" pos="0,0,70,30" />
+				<Label text="Account" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="USERNAME" width="110" height="30" text="JackBoosY" pos="0,0,110,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 				<Label text="Token" width="40" height="30" pos="0,0,40,30" padding="30,0,0,0" />
 				<Edit name="TOKEN" width="400" height="30" pos="0,0,400,30" bordersize="1" bordercolor="0xFFB4B4B4" />
-				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_TOKEN" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_TOKEN" text="Browse" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="35" pos="0,0,0,35" padding="5,0,0,0">
-				<Label text="保存文件至" width="70" height="30" pos="0,0,70,30" />
+				<Label text="Same file to" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="FILE_PATH" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
-				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILE_PATH" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILE_PATH" text="Browse" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="37" pos="0,0,0,37" padding="5,0,0,0">
-				<Label text="规则：" width="48" height="30" pos="0,0,48,30" />
+				<Label text="Rule：" width="48" height="30" pos="0,0,48,30" />
 				<Option name="FILTER_ACTIVE_DAY" width="30" height="30" selected="true" group="filter_type" textcolor="#FF000000" textpadding="25,-5,0,0" style="radio_style" autocalcwidth="true" pos="0,0,30,30" />
-				<Label text="最后一次互动大于" width="103" height="30" pos="0,0,103,30" />
+				<Label text="Interactive time over" width="103" height="30" textpadding="0,3,0,0" pos="0,0,103,30" />
 				<Option name="FILTER_CREATE_DAY" width="30" height="30" group="filter_type" textcolor="#FF000000" textpadding="25,-5,0,0" style="radio_style" autocalcwidth="true" pos="0,0,30,30" padding="50,0,0,0" />
-				<Label text="创建时间大于" width="80" height="30" pos="0,0,80,30" />
-				<Edit name="FILTER_DAY_OVER" width="70" height="30" text="15" pos="0,0,70,30" padding="100,0,0,0" bordercolor="0xFFB4B4B4" bordersize="1" />
-				<Label text="天" width="118" height="30" pos="0,0,118,30" padding="20,0,0,0" />
+				<Label text="Create time over" width="80" height="30" textpadding="0,3,0,0" pos="0,0,80,30" />
+				<Option name="FILTER_COMMIT_DAY" width="30" height="30" group="filter_type" textcolor="#FF000000" textpadding="25,-5,0,0" style="radio_style" autocalcwidth="true" pos="0,0,30,30" padding="50,0,0,0" />
+				<Label text="Last commit over" width="141" height="30" textpadding="0,3,0,0" pos="0,0,141,30" />
+				<Edit name="FILTER_DAY_OVER" width="70" height="30" text="15" pos="0,0,70,30" padding="33,0,0,0" bordercolor="0xFFB4B4B4" bordersize="1" />
+				<Label text="day(s)" width="118" height="30" pos="0,0,118,30" padding="20,0,0,0" />
 			</HorizontalLayout>
 			<HorizontalLayout height="39" pos="0,0,0,39" padding="5,0,0,0">
-				<Label text="类型" width="70" height="30" pos="0,0,70,30" />
+				<Label text="Search Type" width="70" height="30" pos="0,0,70,30" />
 				<Option name="SEARCH_TYPE_ISSUE" selected="true" group="search_type" text="issue" textcolor="#FF000000" textpadding="25,-5,0,0" style="radio_style" autocalcwidth="true" />
 				<Option name="SEARCH_TYPE_PR" group="search_type" text="PR" textcolor="#FF000000" textpadding="25,-5,0,0" style="radio_style" autocalcwidth="true" padding="50,0,0,0" />
 			</HorizontalLayout>
 			<HorizontalLayout height="34" pos="0,0,0,34" padding="5,0,0,0">
-				<Label text="状态" width="70" height="30" pos="0,0,70,30" />
+				<Label text="Label" width="70" height="30" pos="0,0,70,30" />
 				<CheckBox name="RULE_WITH_LABEL_PORT_BUG" text="port bug" width="78" height="30" pos="0,0,78,30" />
 				<CheckBox name="RULE_WITH_LABEL_PORT_FEATURE" text="port feature" width="90" height="30" pos="0,0,90,30" />
 				<CheckBox name="RULE_WITH_LABEL_QUESTION" width="73" text="question" height="30" pos="0,0,73,30" />
@@ -48,20 +50,27 @@
 				<CheckBox name="RULE_WITH_LABEL_VCPKG_BUG" text="vcpkg bug" width="83" height="30" pos="0,0,83,30" />
 				<CheckBox name="RULE_WITH_LABEL_VCPKG_FEATURE" text="vcpkg feature" width="100" height="27" />
 			</HorizontalLayout>
+			<HorizontalLayout height="34" pos="0,0,0,34" padding="5,0,0,0">
+				<CheckBox name="RULE_WITH_LABEL_REVIEWED" text="Reviewed" width="100" height="27" padding="70,0,0,0" />
+				<CheckBox name="RULE_WITH_LABEL_NOT_REVIEWED" text="not-Reviewed" width="100" height="27" />
+				<CheckBox name="RULE_WITH_LABEL_AUTHOR_RESPONSE" text="Author-Response" width="110" height="27" pos="0,0,110,27" padding="70,0,0,0" />
+				<CheckBox name="RULE_WITH_LABEL_NOT_AUTHOR_RESPONSE" text="not-Author-Response" width="130" height="27" pos="0,0,130,27" padding="10,0,0,0" />
+			</HorizontalLayout>
 			<HorizontalLayout height="35" padding="5,0,0,0">
-				<Label text="Comment内容" width="70" height="30" pos="0,0,70,30" />
-				<RichEdit name="COMMENT_CONTENT" width="700" height="30" transparent="false" text="This issue/PR has not been responded to for 15 day, please respond to the assigner or author.--- This information is automatically sent by the robot, do not reply" pos="0,0,700,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Label text="Comment content" width="70" height="30" pos="0,0,70,30" />
+				<RichEdit name="COMMENT_CONTENT" width="700" height="30" transparent="false" text="This issue/PR has not been responded to for 15 day, please respond to the assigner or author.\n\nThis information is automatically sent by the robot, do not reply!" pos="0,0,700,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 		</VerticalLayout>
-		<HorizontalLayout height="366" pos="0,0,0,366" padding="5,0,0,0">
-			<Label text="结果" width="70" height="30" pos="0,0,70,30" />
-			<RichEdit width="700" name="OUTPUT" height="348" vscrollbar="true" autovscroll="true" transparent="false" multiline="true" readonly="true" pos="0,0,700,348" bordersize="1" bordercolor="0xFFB4B4B4" />
+		<HorizontalLayout height="312" pos="0,0,0,312" padding="5,0,0,0">
+			<Label text="Results" width="70" height="30" pos="0,0,70,30" />
+			<RichEdit width="700" name="OUTPUT" height="300" vscrollbar="true" autovscroll="true" transparent="false" multiline="true" readonly="true" pos="0,0,700,300" bordersize="1" bordercolor="0xFFB4B4B4" />
 		</HorizontalLayout>
 		<HorizontalLayout width="800" height="30" pos="0,0,798,30">
-			<Button width="100" height="30" name="GET_DATA" text="导出数据" pos="0,0,100,30" padding="50,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
-			<Button width="100" height="30" name="SEND_COMMENT" text="发Comment提醒" pos="0,0,100,30" padding="100,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
-			<Button width="100" height="30" name="CLOSE_OUT_DATED" text="关闭过期issue/PR" pos="0,0,100,30" padding="100,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
-			<Button width="100" height="30" name="CLOSE" text="退出" pos="0,0,100,30" hotbkcolor="0xFFB4B4B4" padding="100,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			<Button width="100" height="30" name="GET_DATA" text="Export data" pos="0,0,100,30" padding="50,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			<Button width="100" height="30" name="SEND_COMMENT" text="Add comment" pos="0,0,100,30" padding="50,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			<Button width="100" height="30" name="CONVERT_TO_DRAFT" text="Draft issues/PRs" pos="0,0,100,30" padding="50,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			<Button width="100" height="30" name="CLOSE_OUT_DATED" text="Close issues/PRs" pos="0,0,100,30" padding="50,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			<Button width="100" height="30" name="CLOSE" text="Quit" pos="0,0,100,30" hotbkcolor="0xFFB4B4B4" padding="50,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 		</HorizontalLayout>
 	</VerticalLayout>
 </Window>

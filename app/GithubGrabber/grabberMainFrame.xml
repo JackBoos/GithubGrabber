@@ -4,11 +4,11 @@
 	<Default shared="true" name="CheckBox" value="textcolor=&quot;#FFbac0c5&quot; hottextcolor=&quot;#FF386382&quot; selectedtextcolor=&quot;#FF386382&quot; disabledtextcolor=&quot;#FFbac0c5&quot; textpadding=&quot;20,2,0,0&quot; align=&quot;left&quot; selectedimage=&quot;file='checked.png' dest='0,8,16,24'&quot; normalimage=&quot;file='unchecked.png' dest='0,8,16,24'&quot;" />
 	<VerticalLayout width="800" height="700" inset="1,1,1,1" bkcolor="0xFFF0F0F0" bordercolor="0xFF768D9B" bordersize="1">
 		<VerticalLayout height="40" padding="0,0,0,0">
-			<Label text="github数据获取器" width="800" height="30" pos="0,0,800,30" padding="10,0,0,0" />
+			<Label text="Github Grabber" width="800" height="30" pos="0,0,800,30" padding="10,0,0,0" />
 		</VerticalLayout>
 		<VerticalLayout height="600" padding="0,0,0,0">
 			<HorizontalLayout height="61" pos="0,0,0,61" padding="5,0,0,0">
-				<Label text="基础url" width="70" height="30" pos="0,0,70,30" />
+				<Label text="Base Url" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="BASE_URL" width="580" height="30" text="https://api.github.com/search/" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="61" pos="0,0,0,61" padding="5,0,0,0">
@@ -16,33 +16,33 @@
 				<Edit name="REPO_NAME" width="580" height="30" text="microsoft/vcpkg" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
-				<Label text="用户名" width="70" height="30" pos="0,0,70,30" />
+				<Label text="Account" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="USERNAME" width="580" height="30" text="JackBoosY" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
 				<Label text="Token" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="TOKEN" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
-				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_TOKEN" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_TOKEN" text="Browse" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
-				<Label text="保存文件至" width="70" height="30" pos="0,0,70,30" />
+				<Label text="Save to" width="70" height="30" pos="0,0,70,30" />
 				<Edit name="FILE_PATH" width="580" height="30" pos="0,0,580,30" bordersize="1" bordercolor="0xFFB4B4B4" />
-				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILE_PATH" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILE_PATH" text="Browse" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
-				<Label text="过滤规则：分号分隔" width="118" height="30" pos="0,0,118,30" />
-				<Edit name="FILTER_RULES" width="532" height="30" text="number;state;title;created_at;updated_at;" pos="0,0,532,30" bordersize="1" bordercolor="0xFFB4B4B4" />
-				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILTER_RULES" text="浏览" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Label text="filter rules：separate with ';'" width="118" height="30" pos="0,0,118,30" />
+				<Edit name="FILTER_RULES" width="532" height="30" text="html_url;state;title;created_at;updated_at;assignee.login;user.login" pos="0,0,532,30" bordersize="1" bordercolor="0xFFB4B4B4" />
+				<Button width="97" height="29" hotbkcolor="0xFFB4B4B4" pushedbkcolor="0xFF808080" disabledbkcolor="0xFFC0C0C0" name="GET_FILTER_RULES" text="Browse" pos="0,0,97,29" padding="20,0,0,0" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
-				<Label text="类型" width="70" height="30" pos="0,0,70,30" />
+				<Label text="Type" width="70" height="30" pos="0,0,70,30" />
 				<Option name="SEARCH_TYPE_ISSUE" selected="true" width="64" group="search_type" text="issue" textcolor="#FF000000" textpadding="25,-25,10,0" style="radio_style" autocalcwidth="true" />
 				<Option name="SEARCH_TYPE_PR" width="64" group="search_type" text="PR" textcolor="#FF000000" textpadding="25,-25,10,0" style="radio_style" autocalcwidth="true" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
-				<Label text="状态" width="70" height="30" pos="0,0,70,30" />
-				<CheckBox name="RULE_WITH_OPENED" selected="true" text="打开的" width="100" height="27" />
-				<CheckBox name="RULE_WITH_CLOSED" text="关闭的" width="100" height="27" />
+				<Label text="Status" width="70" height="30" pos="0,0,70,30" />
+				<CheckBox name="RULE_WITH_OPENED" selected="true" text="Opened" width="100" height="27" />
+				<CheckBox name="RULE_WITH_CLOSED" text="Closed" width="100" height="27" />
 				<CheckBox name="RULE_WITH_LABEL_PORT_BUG" text="port bug" width="100" height="27" />
 				<CheckBox name="RULE_WITH_LABEL_PORT_FEATURE" text="port feature" width="100" height="27" />
 			</HorizontalLayout>
@@ -55,14 +55,14 @@
 				<CheckBox name="RULE_WITH_LABEL_VCPKG_FEATURE" text="vcpkg feature" width="100" height="27" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
-				<Label text="排序" width="70" height="30" pos="0,0,70,30" />
-				<Option name="SORT_WITH_CERATE_TIME_LOWER" selected="true" width="100" group="sort_type" text="最近到最远" textcolor="#FF000000" textpadding="25,-25,10,0" style="radio_style" autocalcwidth="true" pos="0,0,100,0" />
-				<Option name="SORT_WITH_CERATE_TIME_HIGHER" width="100" group="sort_type" text="最远到最近" textcolor="#FF000000" textpadding="25,-25,10,0" style="radio_style" autocalcwidth="true" pos="0,0,100,0" />
+				<Label text="Sort" width="70" height="30" pos="0,0,70,30" />
+				<Option name="SORT_WITH_CERATE_TIME_LOWER" selected="true" width="130" group="sort_type" text="Nearly to Early" textcolor="#FF000000" textpadding="25,-25,10,0" style="radio_style" autocalcwidth="true" pos="0,0,130,0" />
+				<Option name="SORT_WITH_CERATE_TIME_HIGHER" width="130" group="sort_type" text="Early to Nearly" textcolor="#FF000000" textpadding="25,-25,10,0" style="radio_style" autocalcwidth="true" pos="0,0,130,0" padding="30,0,0,0" />
 			</HorizontalLayout>
 		</VerticalLayout>
 		<HorizontalLayout width="800" height="30" pos="0,0,798,30">
-			<Button width="100" height="30" name="GET_DATA" text="获取数据" pos="0,0,100,30" padding="100,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
-			<Button width="100" height="30" name="CLOSE" text="关闭" pos="0,0,100,30" padding="400,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			<Button width="100" height="30" name="GET_DATA" text="Get Data" pos="0,0,100,30" padding="100,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
+			<Button width="100" height="30" name="CLOSE" text="Close" pos="0,0,100,30" padding="400,0,0,0" hotbkcolor="0xFFB4B4B4" bkcolor="0xFFF0F0F0" bkcolor2="0xFFD2D2D2" bordersize="1" bordercolor="0xFFB4B4B4" />
 		</HorizontalLayout>
 	</VerticalLayout>
 </Window>

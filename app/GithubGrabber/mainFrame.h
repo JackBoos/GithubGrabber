@@ -30,6 +30,7 @@ private:
     void OnGetFilters();
     std::wstring GetCurrentPath();
     void GetFilterConditions(ConditionList& conditions);
+    void GetCondition(const std::string& strCondition, Condition& cdt);
 
 private:
     CEditUI* m_editBaseUrl;

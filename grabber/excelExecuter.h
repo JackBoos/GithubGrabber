@@ -1,6 +1,10 @@
 #pragma once
 
 #include "commonData.h"
+#include <xlsxio_version.h>
+#include <xlsxio_write.h>
+#include <string>
+#include <vector>
 
 class excelExecuter
 {
@@ -10,7 +14,15 @@ public:
 
     static excelExecuter& GetInstance();
 
-    bool WriteToFile(const char* filePath, const IteamDataList& dataList, const ConditionList& filterConditions);
+    bool WriteToFile(const char* filePath, const ItemsDataList& dataList, const ConditionList& filterConditions);
+
+private:
+    void TraverseHeader(const OneItemDataList& dataList, const xlsxiowriter writer, const std::vector<std::string>& filter);
+    void TraverseSubHeader(const void* dataList, const xlsxiowriter writer, const std::vector<std::string>& filter, const char* originName);
+    void TraverseData(const OneItemDataList& dataList, const xlsxiowriter writer, const std::vector<std::string>& filter);
+    void TraverseSubData(const void* dataList, const xlsxiowriter writer, const std::vector<std::string>& filter, const char* originName);
+    std::string GetIteamName(const ItemData& dataList, const char* prevString);
+    std::string GetFliterName(const Condition& cdt, const char* prevString = nullptr);
 
 private:
     static excelExecuter* _ptr;

@@ -46,7 +46,7 @@ void grabber::ResetBaseUrl(const char* baseurl)
     m_parser->ResetBaseUrl(baseurl);
 }
 
-bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount, const ConditionList& filterConditions, IteamDataList* outDataList, bool bSave)
+bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount, const ConditionList& filterConditions, ItemsDataList* outDataList, bool bSave)
 {
     if (!bInit || !outFile || !(*outFile) || !onePageCount)
         return false;
@@ -57,9 +57,9 @@ bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, 
     strSubUrl += QUERY_KEYWORD;
     for (auto i = conditions.begin(); i != conditions.end(); i++)
     {
-        if (!(i->empty()))
+        if (!(i->main.empty()))
         {
-            strSubUrl += *i;
+            strSubUrl += i->main;
             strSubUrl += " ";
         }
     }
@@ -78,7 +78,7 @@ bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, 
         return bSuc;
 
     int iTotalItemSize = dataAnalysis::GetInstance().GetTotalSize(outData, GITHUB_TOTAL_COUNT_NAME);
-    IteamDataList vData;
+    ItemsDataList vData;
     bSuc = dataAnalysis::GetInstance().ParseData(outData, GITHUB_ITEAM_NAME, vData);
     if (!bSuc)
         return bSuc;
@@ -117,7 +117,7 @@ bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, 
                 }
             }
         }
-        vData.swap(IteamDataList());
+        vData.swap(ItemsDataList());
     }
 
     return bSuc;

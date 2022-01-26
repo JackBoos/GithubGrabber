@@ -1,5 +1,6 @@
 ﻿#include "mainFrame.h"
 #include <fstream>
+#include <regex>
 #include <time.h>
 
 #define ONE_MON_DAY 30
@@ -26,6 +27,7 @@ TestFrame::TestFrame()
     m_boxDocument = nullptr;
     m_boxVcpkgBug = nullptr;
     m_boxVcpkgFeature = nullptr;
+    m_boxReviewed = nullptr;
 
     m_gb = nullptr;
     m_iFilterDay = 0;
@@ -63,6 +65,7 @@ void TestFrame::InitWindow()
     m_editOutput = (CRichEditUI*)m_PaintManager.FindControl(_T("OUTPUT"));
     m_optionFilterActiveDay = (COptionUI*)m_PaintManager.FindControl(_T("FILTER_ACTIVE_DAY"));
     m_optionFilterCreateDay = (COptionUI*)m_PaintManager.FindControl(_T("FILTER_CREATE_DAY"));
+    m_optionFilterLastCommitDay = (COptionUI*)m_PaintManager.FindControl(_T("FILTER_COMMIT_DAY"));
     m_optionIssue = (COptionUI*)m_PaintManager.FindControl(_T("SEARCH_TYPE_ISSUE"));
     m_optionPR = (COptionUI*)m_PaintManager.FindControl(_T("SEARCH_TYPE_PR"));
     m_boxPortBug = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_PORT_BUG"));
@@ -73,6 +76,7 @@ void TestFrame::InitWindow()
     m_boxDocument = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_DOCUMENT"));
     m_boxVcpkgBug = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_VCPKG_BUG"));
     m_boxVcpkgFeature = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_VCPKG_FEATURE"));
+    m_boxReviewed = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_REVIEWED"));
 
     std::wstring filepath = GetCurrentPath() + _T("result.xlsx");
     m_editFilePath->SetText(filepath.c_str());
@@ -118,9 +122,13 @@ void TestFrame::Notify(TNotifyUI& msg)
 
 void TestFrame::OnGetData()
 {
-    std::wstring repoName = (wchar_t*)m_editRepoUrl->GetText().GetData();
-    char szRepoName[256];
-    sprintf(szRepoName, "%ws", repoName.c_str());
+    std::string strRepoName = GetRepoName();
+
+    if (strRepoName.empty())
+    {
+        ::MessageBox(NULL, _T("Please input the repo name first."), _T(""), NULL);
+        return;
+    }
 
     std::wstring userName = (wchar_t*)m_editUserName->GetText().GetData();
     char szUserName[256];
@@ -149,12 +157,6 @@ void TestFrame::OnGetData()
     SearchType search_type = bIsIssue ? SearchType::SEARCHTYPE_ISSUE : SearchType::SEARCHTYPE_PR;
     const char* search_type_message = bIsIssue ? SEARCHNAME_ISSUE : SEARCHNAME_PR;
 
-    if (!(*szRepoName))
-    {
-        ::MessageBox(NULL, _T("Please input the repo name first."), _T(""), NULL);
-        return;
-    }
-
     if (!(*szFilePath))
     {
         ::MessageBox(NULL, _T("Please select the output file first."), _T(""), NULL);
@@ -170,7 +172,7 @@ void TestFrame::OnGetData()
 
     ConditionList cdtList;
     std::string strRepo = "repo:";
-    strRepo += szRepoName;
+    strRepo += strRepoName;
     cdtList.push_back(strRepo.c_str());
     if (bIsIssue)
         cdtList.push_back("type:issue");
@@ -193,6 +195,8 @@ void TestFrame::OnGetData()
         cdtList.push_back("label:\"category:vcpkg-bug\"");
     if (m_boxVcpkgFeature->IsSelected())
         cdtList.push_back("label:\"category:vcpkg-feature\"");
+    if (m_boxReviewed->IsSelected())
+        cdtList.push_back("label:\"info:reviewed\"");
 
     cdtList.push_back("sort:created-desc");
     cdtList.push_back("state:open");
@@ -210,9 +214,13 @@ void TestFrame::OnGetData()
 
 void TestFrame::OnSendComment()
 {
-    std::wstring repoName = (wchar_t*)m_editRepoUrl->GetText().GetData();
-    char szRepoName[256];
-    sprintf(szRepoName, "%ws", repoName.c_str());
+    std::string strRepoName = GetRepoName();
+
+    if (strRepoName.empty())
+    {
+        ::MessageBox(NULL, _T("Please input the repo name first."), _T(""), NULL);
+        return;
+    }
 
     std::wstring userName = (wchar_t*)m_editUserName->GetText().GetData();
     char szUserName[256];
@@ -222,9 +230,7 @@ void TestFrame::OnSendComment()
     char szToken[256];
     sprintf(szToken, "%ws", token.c_str());
 
-    std::wstring commentContent = m_editComment->GetText().GetData();
-    char szCommentContent[256];
-    sprintf(szCommentContent, "%ws", commentContent.c_str());
+    std::string strCommentContent = GetComment();
 
     if (*szToken == '\0')
     {
@@ -236,13 +242,7 @@ void TestFrame::OnSendComment()
     SearchType search_type = bIsIssue ? SearchType::SEARCHTYPE_ISSUE : SearchType::SEARCHTYPE_PR;
     const char* search_type_message = bIsIssue ? SEARCHNAME_ISSUE : SEARCHNAME_PR;
 
-    if (!(*szRepoName))
-    {
-        ::MessageBox(NULL, _T("Please input the repo name first."), _T(""), NULL);
-        return;
-    }
-
-    if (!(*szCommentContent))
+    if (strCommentContent.empty())
     {
         ::MessageBox(NULL, _T("Please type the comment."), _T(""), NULL);
         return;
@@ -258,13 +258,13 @@ void TestFrame::OnSendComment()
     ExecuteData data;
     data.type = ExecuteType::EXECUTE_TYPE_ADD_COMMENT;
     data.dst = ExecuteOpDest::EXECUTE_OP_TO_NONE;
-    data.comment = szCommentContent;
+    data.comment = strCommentContent;
 
 
     for (auto i = m_dataList.begin(); i != m_dataList.end(); i++)
     {
         data.issue_pr_id = *((int*)find(i->begin(), i->end(), "number")->value);
-        if (!m_gb->Execute(szRepoName, search_type, data))
+        if (!m_gb->Execute(strRepoName, search_type, data))
         {
             ::MessageBox(NULL, _T("Failed to execute operate!"), _T(""), NULL);
             return;
@@ -278,9 +278,13 @@ void TestFrame::OnSendComment()
 
 void TestFrame::OnCloseOutdated()
 {
-    std::wstring repoName = (wchar_t*)m_editRepoUrl->GetText().GetData();
-    char szRepoName[256];
-    sprintf(szRepoName, "%ws", repoName.c_str());
+    std::string strRepoName = GetRepoName();
+
+    if (strRepoName.empty())
+    {
+        ::MessageBox(NULL, _T("Please input the repo name first."), _T(""), NULL);
+        return;
+    }
 
     std::wstring userName = (wchar_t*)m_editUserName->GetText().GetData();
     char szUserName[256];
@@ -300,12 +304,6 @@ void TestFrame::OnCloseOutdated()
     SearchType search_type = bIsIssue ? SearchType::SEARCHTYPE_ISSUE : SearchType::SEARCHTYPE_PR;
     const char* search_type_message = bIsIssue ? SEARCHNAME_ISSUE : SEARCHNAME_PR;
 
-    if (!(*szRepoName))
-    {
-        ::MessageBox(NULL, _T("Please input the repo name first."), _T(""), NULL);
-        return;
-    }
-
     if (!m_gb)
     {
         m_gb = new GithubGrabber::grabber(GITHUB_SEARCH_OPERATE_URL, szUserName, szToken);
@@ -319,7 +317,7 @@ void TestFrame::OnCloseOutdated()
     for (auto i = m_dataList.begin(); i != m_dataList.end(); i++)
     {
         data.issue_pr_id = *((int*)find(i->begin(), i->end(), "number")->value);
-        if (!m_gb->Execute(szRepoName, search_type, data))
+        if (!m_gb->Execute(strRepoName, search_type, data))
         {
             ::MessageBox(NULL, _T("Failed to execute operate!"), _T(""), NULL);
             return;
@@ -504,4 +502,32 @@ int TestFrame::GetActiveDay(std::string& from)
         + (int)(nowTime->tm_mday - tmFromTime.tm_mday + (bOverDay ? 30 : 0));
 
     return abs;
+}
+
+std::string TestFrame::GetRepoName()
+{
+    std::wstring repoName = (wchar_t*)m_editRepoUrl->GetText().GetData();
+    char szRepoName[256];
+    sprintf(szRepoName, "%ws", repoName.c_str());
+
+    if (!szRepoName || !*szRepoName)
+        return std::string();
+
+    return std::string(szRepoName);
+}
+
+std::string TestFrame::GetComment()
+{
+    std::wstring commentContent = m_editComment->GetText().GetData();
+    char szCommentContent[256];
+    sprintf(szCommentContent, "%ws", commentContent.c_str());
+
+    if (!szCommentContent || !*szCommentContent)
+        return std::string();
+
+
+    std::string strCommentContent = szCommentContent;
+    strCommentContent = regex_replace(strCommentContent, regex("\\\\n"), std::string("\n"));
+
+    return strCommentContent;
 }

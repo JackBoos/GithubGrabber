@@ -35,6 +35,9 @@ typedef enum _DataType
     DATATYPE_INT = 1,
     DATATYPE_STRING = 2,
     DATATYPE_BOOLEAN = 3,
+    DATATYPE_NULL = 4,
+    DATATYPE_OBJECT = 5,
+    DATATYPE_ARRAY = 6,
 }DataType;
 
 typedef enum _SearchType
@@ -83,7 +86,31 @@ typedef struct _ExecuteData
     std::string comment;
 }ExecuteData;
 
-typedef std::list<ItemData> OneIteamDataList;
-typedef std::list<OneIteamDataList> IteamDataList;
+typedef struct _Condition
+{
+    _Condition()
+    {
+        sub = nullptr;
+    }
+    _Condition(const _Condition& data)
+    {
+        main = data.main;
+        sub = data.sub;
+    }
+    _Condition(const char* data)
+    {
+        main = data;
+        sub = nullptr;
+    }
+    bool operator == (const std::string& dst) const
+    {
+        return (main == dst);
+    }
+    std::string main;
+    _Condition* sub;
+}Condition;
 
-typedef std::list<std::string> ConditionList;
+typedef std::list<ItemData> OneItemDataList;
+typedef std::list<OneItemDataList> ItemsDataList;
+
+typedef std::list<Condition> ConditionList;

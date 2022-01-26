@@ -2,6 +2,8 @@
 #include "grabber.h"
 #include <fstream>
 
+#define CONDITION_CONNECTOR "."
+
 TestFrame::TestFrame()
 {
     m_editBaseUrl = nullptr;
@@ -235,8 +237,8 @@ void TestFrame::GetFilterConditions(ConditionList& conditions)
     if (filterCondition.empty())
         return;
 
-    char* szFilterCondition = new char[filterCondition.length() + 1];
-    sprintf(szFilterCondition, "%ws", filterCondition.c_str());
+    char* szFilterCondition = new char[filterCondition.length() + strlen(";") + 1];
+    sprintf(szFilterCondition, "%ws;", filterCondition.c_str());
 
     char* startPtr = szFilterCondition;
     char* currPtr = startPtr;
@@ -244,9 +246,14 @@ void TestFrame::GetFilterConditions(ConditionList& conditions)
     {
         if (*currPtr == ';')
         {
-            std::string strTmp;
-            strTmp.insert(0, startPtr, currPtr - startPtr);
-            conditions.push_back(strTmp);
+            Condition cdt;
+            std::string strCurr;
+            strCurr.insert(0, startPtr, currPtr - startPtr);
+
+            GetCondition(strCurr, cdt);
+
+
+            conditions.push_back(cdt);
             startPtr = currPtr + 1;
         }
 
@@ -418,4 +425,24 @@ std::wstring TestFrame::GetCurrentPath()
     (_tcsrchr(szFilePath, _T('\\')))[1] = 0;
 
     return std::wstring(szFilePath);
+}
+
+void TestFrame::GetCondition(const std::string& strCondition, Condition& cdt)
+{
+    std::string strRealCondition;
+    auto dot = strCondition.find(CONDITION_CONNECTOR);
+    if (dot != std::string::npos)
+    {
+        cdt.sub = new Condition;
+        auto& nextCdt = *cdt.sub;
+        auto next = dot + strlen(CONDITION_CONNECTOR);
+        cdt.main = strCondition.substr(0, dot);
+        strRealCondition = strCondition.substr(next, strCondition.length() - (next));
+        GetCondition(strRealCondition, nextCdt);
+    }
+    else
+    {
+        cdt.main = strCondition;
+        cdt.sub = nullptr;
+    }
 }
