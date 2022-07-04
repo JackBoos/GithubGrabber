@@ -45,6 +45,7 @@
 				<CheckBox name="RULE_WITH_CLOSED" text="Closed" width="100" height="27" />
 				<CheckBox name="RULE_WITH_LABEL_PORT_BUG" text="port bug" width="100" height="27" />
 				<CheckBox name="RULE_WITH_LABEL_PORT_FEATURE" text="port feature" width="100" height="27" />
+				<CheckBox name="RULE_WITH_LABEL_COMMUNITY_TRIPLET" text="community triplet" width="100" height="27" />
 			</HorizontalLayout>
 			<HorizontalLayout height="60" pos="0,0,0,60" padding="5,0,0,0">
 				<CheckBox name="RULE_WITH_LABEL_QUESTION" text="question" width="100" height="27" padding="68,0,0,0" />

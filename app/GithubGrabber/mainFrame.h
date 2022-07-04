@@ -46,6 +46,7 @@ private:
     CCheckBoxUI* m_boxClosed;
     CCheckBoxUI* m_boxPortBug;
     CCheckBoxUI* m_boxPortFeature;
+    CCheckBoxUI* m_boxCommunityTriplet;
     CCheckBoxUI* m_boxQuestion;
     CCheckBoxUI* m_boxNeedsRepro;
     CCheckBoxUI* m_boxNeedMoreInfo;

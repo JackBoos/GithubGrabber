@@ -18,6 +18,7 @@ TestFrame::TestFrame()
     m_boxClosed = nullptr;
     m_boxPortBug = nullptr;
     m_boxPortFeature = nullptr;
+    m_boxCommunityTriplet = nullptr;
     m_boxQuestion = nullptr;
     m_boxNeedsRepro = nullptr;
     m_boxNeedMoreInfo = nullptr;
@@ -62,6 +63,7 @@ void TestFrame::InitWindow()
     m_boxClosed = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_CLOSED"));
     m_boxPortBug = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_PORT_BUG"));
     m_boxPortFeature = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_PORT_FEATURE"));
+    m_boxCommunityTriplet = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_COMMUNITY_TRIPLET"));
     m_boxQuestion = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_QUESTION"));
     m_boxNeedsRepro = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_NEEDS_REPRO"));
     m_boxNeedMoreInfo = (CCheckBoxUI*)m_PaintManager.FindControl(_T("RULE_WITH_LABEL_NEED_MORE_INFO"));
@@ -176,6 +178,8 @@ void TestFrame::OnGetData()
         cdtList.push_back("label:\"category:port-bug\"");
     if (m_boxPortFeature->IsSelected())
         cdtList.push_back("label:\"category:port-feature\"");
+    if (m_boxCommunityTriplet->IsSelected())
+        cdtList.push_back("label:\"category:community-triplet\"");
     if (m_boxQuestion->IsSelected())
         cdtList.push_back("label:\"category:question\"");
     if (m_boxNeedsRepro->IsSelected())
