@@ -42,21 +42,36 @@ int dataAnalysis::GetTotalSize(const std::string& inString, const char* keyword)
 
 bool dataAnalysis::ParseData(const std::string& inString, const char* subLable, ItemsDataList& pOut)
 {
-    if (inString.empty() || !subLable)
+    if (inString.empty())
         return false;
 
     Json::Reader reader;
     Json::Value root;
     if (reader.parse(inString, root))
     {
-        if (root[subLable].isArray())
+        if (subLable)
         {
-            handleArray(root[subLable], pOut);
-            return true;
+            if (root[subLable].isArray())
+            {
+                handleArray(root[subLable], pOut);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
-            return false;
+            if (root.isObject())
+            {
+                handleObject(root, pOut);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
     else

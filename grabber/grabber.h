@@ -15,6 +15,7 @@ namespace GithubGrabber
 
         void ResetBaseUrl(const char* baseurl);
 
+        bool GetPerIssueOrPR(const std::string& number, ItemsDataList* outDataList);
         bool GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount, const ConditionList& filterConditions = ConditionList(), ItemsDataList* outDataList = nullptr, bool bSave = true);
 
         bool Execute(const std::string& repo, SearchType type, const ExecuteData& data);

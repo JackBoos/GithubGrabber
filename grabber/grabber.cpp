@@ -1,3 +1,4 @@
+#include "grabber.h"
 #include "commonData.h"
 #include "grabber.h"
 #include "dataAnalysis.h"
@@ -44,6 +45,31 @@ void grabber::ResetBaseUrl(const char* baseurl)
         return;
     m_baseUrl = baseurl;
     m_parser->ResetBaseUrl(baseurl);
+}
+
+bool GithubGrabber::grabber::GetPerIssueOrPR(const std::string & number, ItemsDataList * outDataList)
+{
+    if (!bInit || number.empty())
+        return false;
+
+    bool bSuc = false;
+    std::string strSubUrl = number;
+
+    std::string outData;
+    std::string strCurrentUrl = strSubUrl;
+    bSuc = m_parser->GetData(strCurrentUrl.c_str(), outData);
+
+    ItemsDataList vData;
+
+    if (dataAnalysis::GetInstance().ParseData(outData, nullptr, vData))
+    {
+        outDataList->swap(vData);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool grabber::GetData(SearchCondition& search, const ConditionList& conditions, const char* outFile, unsigned int onePageCount, const ConditionList& filterConditions, ItemsDataList* outDataList, bool bSave)

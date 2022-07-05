@@ -3,6 +3,7 @@
 #include "gitOperator.h"
 #include <processenv.h>
 #include <experimental/filesystem>
+#include <iostream>
 
 namespace GithubGrabber
 {
@@ -19,7 +20,13 @@ namespace GithubGrabber
     {
         std::string tmpFolder = GetTmpPath();
         if (tmpFolder.size())
-            std::experimental::filesystem::remove(tmpFolder);
+        {
+            std::error_code errorCode;
+            if (!std::experimental::filesystem::remove_all(tmpFolder, errorCode))
+            {
+               std::cout << "Remove directory failed: " << errorCode.message() << std::endl;
+            }
+        }
     }
 
     bool gitOperator::Init()
@@ -77,7 +84,7 @@ namespace GithubGrabber
 
         if (execGit(strCmd, remote, remote.szLocation))
         {
-            strcpy(remote.szBranchName, "branch");
+            strcpy(remote.szBranchName, branch.c_str());
             return true;
         }
         else
@@ -220,7 +227,10 @@ namespace GithubGrabber
         GetExitCodeProcess(pi.hProcess, &exitCode);
 
         if (exitCode != 0)
+        {
+            std::cout << "failed to run git command: " << std::endl << strCmd << std::endl;
             return false;
+        }
 
         return ret == TRUE;
 #endif
