@@ -5,6 +5,7 @@ set(GRABBER_SOURCES
 	"${CMAKE_CURRENT_LIST_DIR}/urlParser.cpp"
 	"${CMAKE_CURRENT_LIST_DIR}/excelExecuter.cpp"
 	"${CMAKE_CURRENT_LIST_DIR}/grabber.cpp"
+	"${CMAKE_CURRENT_LIST_DIR}/gitOperator.cpp"
 )
 
 add_library (grabber STATIC ${GRABBER_SOURCES})
@@ -16,6 +17,10 @@ if (MSVC)
 endif()
 
 target_link_libraries(grabber PUBLIC CURL::libcurl jsoncpp_lib jsoncpp_object ${XLSX_TARGETS})
+
+if (WIN32)
+	target_link_libraries(grabber PUBLIC Kernel32)
+endif()
 
 file(GLOB GRABBER_INCLUDES "${CMAKE_CURRENT_LIST_DIR}/*.h")
 install(FILES ${GRABBER_INCLUDES} DESTINATION include/githubgrabber)
