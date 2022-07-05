@@ -5,6 +5,7 @@ project(GithubGrabber CXX)
 option(BUILD_APPS "Build Apps" ON)
 cmake_dependent_option(BUILD_APP_Grabber "Build App Grabber" ON BUILD_APPS OFF)
 cmake_dependent_option(BUILD_APP_Checker "Build App Checker" ON BUILD_APPS OFF)
+cmake_dependent_option(BUILD_APP_GitMerger "Build App Checker" ON BUILD_APPS OFF)
 
 
 set(CMAKE_CXX_STANDARD 11)
