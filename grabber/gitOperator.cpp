@@ -138,6 +138,7 @@ namespace GithubGrabber
         DWORD env = GetEnvironmentVariableA("PATH", pszPath, cacheSize);
         if (!env)
         {
+            std::cout << "Get envirnnment PATH failed" << std::endl;
             delete[] pszPath;
             return false;
         }
@@ -149,24 +150,54 @@ namespace GithubGrabber
             env = GetEnvironmentVariableA("PATH", pszPath, cacheSize);
         }
         std::string strPATHS = pszPath;
+        delete[] pszPath;
+
+        std::cout << "ENV PATH: " << std::endl << strPATHS << std::endl;
+
         auto pos = 0;
-        while (pos != strPATHS.size())
+        while (strPATHS.size() > 1)
         {
             pos = strPATHS.find_first_of(";");
+            if (pos == std::string::npos)
+            {
+                std::cout << "Find next PATH failed." << std::endl;
+                break;
+            }
             std::string strCurrPATH = strPATHS.substr(0, pos);
+
+            if (strCurrPATH.empty())
+            {
+                strPATHS.erase(0, pos + 1);
+                pos = 0;
+                continue;
+            }
+#ifdef _WIN32
             if (strCurrPATH.at(strCurrPATH.size() - 1) != '\\')
                 strCurrPATH += "\\";
             strCurrPATH += "git.exe";
+#else
+            if (strCurrPATH.at(strCurrPATH.size() - 1) != '/')
+                strCurrPATH += "/";
+            strCurrPATH += "git";
+#endif
+
+            std::cout << "Checking " << strCurrPATH << " exist..." << std::endl;
 
             strPATHS.erase(0, pos + 1);
             pos = 0;
 
-            if (std::experimental::filesystem::exists(strCurrPATH))
+            std::error_code code;
+            if (std::experimental::filesystem::exists(strCurrPATH, code))
             {
+                std::cout << "Found git: " << strCurrPATH << std::endl;
                 gitExe = strCurrPATH;
                 bInit = true;
 
                 break;
+            }
+            else
+            {
+                std::cout << "Not found." << std::endl;
             }
         }
 
