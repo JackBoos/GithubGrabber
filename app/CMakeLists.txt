@@ -11,3 +11,8 @@ if (BUILD_APP_GitMerger AND WIN32)
 	add_subdirectory(gitMerger)
 endif()
 
+
+if (BUILD_APP_GitMerger AND WIN32)
+	add_subdirectory(GetRepos)
+endif()
+

@@ -1,25 +1,28 @@
 #pragma once
 
+#include <curl/curl.h>
 #include <string>
 
-class urlParser
-{
+class urlParser {
 public:
-    urlParser(const char* url = nullptr);
-    ~urlParser();
+  urlParser(const char *url = nullptr);
+  ~urlParser();
 
-    bool Init(const char* username = nullptr, const char* token = nullptr);
+  bool Init(const char *username = nullptr, const char *token = nullptr);
 
-    void ResetBaseUrl(const char* baseurl);
+  void ResetBaseUrl(const char *baseurl);
 
-    bool GetData(const char* extUrl, std::string& outData);
+  bool GetData(const char *extUrl, std::string &outData);
 
-    bool PostData(const char* extUrl, const std::string& inData = std::string(), const char* customRequest = nullptr);
-
-private:
-    static size_t AppendData(void *ptr, size_t size, size_t nmemb, void *stream);
+  bool PostData(const char *extUrl, const std::string &inData = std::string(),
+                const char *customRequest = nullptr);
 
 private:
-    std::string m_currUrlBase;
-    std::string m_token;
+  static size_t AppendData(void *ptr, size_t size, size_t nmemb, void *stream);
+
+  void AddAuthorInfo(CURL *curl);
+
+private:
+  std::string m_currUrlBase;
+  std::string m_token;
 };
